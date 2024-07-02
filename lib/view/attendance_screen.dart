@@ -12,7 +12,8 @@ class AttendanceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Attendance Screen'),
+        centerTitle: false,
+        title: const Text('Attendance'),
       ),
       body: FutureBuilder<void>(
         future: AttendanceController.to.initializeControllerFuture,

@@ -1,15 +1,13 @@
-import 'package:crm/model/employee.dart';
-import 'package:crm/model/side.dart';
+import 'dart:convert';
+import 'package:crm/model/SiteModel.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class SiteController extends GetxController {
   static SiteController get to => Get.find();
-  var selectedDate = DateTime.now().obs;
-  var startDate = DateTime.now().subtract(const Duration(days: 3)).obs;
-  RxList isShowMoreSite = [0].obs;
 
-  var sites = <Site>[].obs;
-  var employee = <Employee>[].obs;
+  var isShowMoreSite = <int>[].obs;
+  Rx<SiteModel> sites = SiteModel().obs;
 
   @override
   void onInit() {
@@ -17,52 +15,30 @@ class SiteController extends GetxController {
     fetchSites();
   }
 
-  void fetchSites() {
-    sites.assignAll([
-      Site(
-          ownerName: 'Shruti',
-          ownerNumber: '+91 98765 43210',
-          supervisorName: 'Supervisor Name',
-          managerName: 'Manager Name',
-          numWorkers: '25/30',
-          numHelpers: '05/20'),
-      Site(
-        ownerName: 'Shruti',
-        ownerNumber: '+91 98765 43210',
-        supervisorName: 'Supervisor Name',
-        managerName: 'Manager Name',
-        numWorkers: '30',
-        numHelpers: '05',
-      ),
-    ]);
-
-    employee.assignAll([
-      Employee(
-          empName: "Smit",
-          empNumber: "34365476575",
-          empCategory: "Worker",
-          checkIn: "10:00 AM",
-          checkout: "18:00 PM"),
-      Employee(
-          empName: "Yash",
-          empNumber: "34365476575",
-          empCategory: "Helper",
-          checkIn: "10:00 AM",
-          checkout: "18:00 PM"),
-      Employee(
-          empName: "harsh",
-          empNumber: "34365476575",
-          empCategory: "Manager",
-          checkIn: "10:00 AM",
-          checkout: "18:00 PM")
-    ]);
+  void fetchSites() async {
+    var url = Uri.parse(
+        'http://127.0.0.1:3001/site/get-site-by-manager?managerId=667746d80c6c6f5cb1c1c0fe&date=2024-06-23');
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        sites.value = SiteModel.fromJson(jsonDecode(response.body));
+      } else {
+        // Handle other status codes if needed
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network errors or exceptions
+      print('Exception occured: $e');
+    }
   }
 
-  void updateSelectedDate(DateTime date) {
-    selectedDate.value = date;
-  }
-
-  void moveDateRange(int days) {
-    startDate.value = startDate.value.add(Duration(days: days));
+  void toggleShowMore(int index) {
+    if (isShowMoreSite.contains(index)) {
+      isShowMoreSite.remove(index);
+      print('Removed index: $index');
+    } else {
+      isShowMoreSite.add(index);
+      print('Added index: $index');
+    }
   }
 }

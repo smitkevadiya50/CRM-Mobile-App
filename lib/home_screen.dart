@@ -1,6 +1,7 @@
 import 'package:crm/controller/general_controller.dart';
 import 'package:crm/view/attendance_screen.dart';
 import 'package:crm/view/photos_screen.dart';
+import 'package:crm/view/settings_screen.dart';
 import 'package:crm/view/site_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,10 +12,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('Employee Verification'),
-      ),
       body: Obx(() {
         // Switch between different widgets based on the selected index
         switch (GeneralController.to.selectedIndex.value) {
@@ -24,12 +21,16 @@ class HomeScreen extends StatelessWidget {
             return const AttendanceScreen();
           case 2:
             return const PhotosScreen();
+          case 3:
+            return const SettingsScreen();
           default:
-            return const Center(child: Text('Home'));
+            return SiteScreen();
         }
       }),
       bottomNavigationBar: Obx(() {
         return BottomNavigationBar(
+          fixedColor: Colors.indigo,
+          unselectedItemColor: Colors.black45,
           currentIndex: GeneralController.to.selectedIndex.value,
           onTap: GeneralController.to.changeIndex,
           items: const [
@@ -44,6 +45,10 @@ class HomeScreen extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_outlined),
               label: 'Photos',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
             ),
           ],
         );
