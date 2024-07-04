@@ -1,3 +1,4 @@
+import 'package:crm/controller/site_controller.dart';
 import 'package:get/get.dart';
 
 class GeneralController extends GetxController {
@@ -15,6 +16,7 @@ class GeneralController extends GetxController {
 
   void updateSelectedDate(DateTime date) {
     selectedDate.value = date;
+    SiteController.to.fetchSites();
   }
 
   void moveDateRange(int days) {

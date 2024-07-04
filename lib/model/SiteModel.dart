@@ -33,6 +33,7 @@ class Site {
   String? siteLocation;
   String? ownerName;
   String? ownerNumber;
+  String? siteLogo;
   Manager? supervisor;
   Manager? manager;
   List<Manager>? worker;
@@ -43,6 +44,7 @@ class Site {
     this.siteLocation,
     this.ownerName,
     this.ownerNumber,
+    this.siteLogo,
     this.supervisor,
     this.manager,
     this.worker,
@@ -54,6 +56,7 @@ class Site {
         siteLocation: json["site_location"],
         ownerName: json["owner_name"],
         ownerNumber: json["owner_number"],
+        siteLogo: json["site_logo"],
         supervisor: json["supervisor"] == null
             ? null
             : Manager.fromJson(json["supervisor"]),
@@ -74,6 +77,7 @@ class Site {
         "site_location": siteLocation,
         "owner_name": ownerName,
         "owner_number": ownerNumber,
+        "site_logo": siteLogo,
         "supervisor": supervisor?.toJson(),
         "manager": manager?.toJson(),
         "worker": worker == null

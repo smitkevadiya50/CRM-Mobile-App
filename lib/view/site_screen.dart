@@ -1,4 +1,5 @@
 import 'package:crm/controller/site_controller.dart';
+import 'package:crm/utility/api.dart';
 import 'package:crm/view/calendar_screen.dart';
 import 'package:crm/widget/site_list_items.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,16 @@ class SiteScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         title: const Text("Site"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: GestureDetector(
+                onTap: () {
+                  SiteController.to.fetchSites();
+                },
+                child: const Icon(Icons.refresh_rounded)),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: width * 0.02),
@@ -66,9 +77,12 @@ class SiteScreen extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const CircleAvatar(
+                                    CircleAvatar(
                                       radius: 20,
                                       backgroundColor: Colors.brown,
+                                      backgroundImage: NetworkImage(
+                                          site.siteLogo.toString(),
+                                          scale: 1.0),
                                     ),
                                     SizedBox(width: width * 0.03),
                                     Column(
@@ -159,10 +173,13 @@ class SiteScreen extends StatelessWidget {
                                                   .contains(index)
                                               ? Row(
                                                   children: [
-                                                    const CircleAvatar(
+                                                    CircleAvatar(
                                                       radius: 20,
-                                                      backgroundColor:
-                                                          Colors.brown,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              workers.photo
+                                                                  .toString(),
+                                                              scale: 1.0),
                                                     ),
                                                     Padding(
                                                       padding:
@@ -202,18 +219,26 @@ class SiteScreen extends StatelessWidget {
                                                         siteListItems(
                                                             title: "Check In",
                                                             text: workers
-                                                                    .attendance!
-                                                                    .startTime ??
-                                                                ""),
+                                                                        .attendance ==
+                                                                    null
+                                                                ? "--:--"
+                                                                : workers
+                                                                        .attendance!
+                                                                        .startTime ??
+                                                                    ""),
                                                         const SizedBox(
                                                           width: 10,
                                                         ),
                                                         siteListItems(
                                                             title: "Check out",
                                                             text: workers
-                                                                    .attendance!
-                                                                    .endTime ??
-                                                                ""),
+                                                                        .attendance ==
+                                                                    null
+                                                                ? "--:--"
+                                                                : workers
+                                                                        .attendance!
+                                                                        .endTime ??
+                                                                    ""),
                                                       ],
                                                     )
                                                   ],
