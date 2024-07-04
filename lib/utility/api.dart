@@ -4,4 +4,6 @@ const String site = "$baseURL/site";
 
 const String detect = "$baseURL/detect";
 
+const String sitePhotos = "$baseURL/sitePhotos";
+
 const String getSiteByManager = "$site/get-site-by-manager";

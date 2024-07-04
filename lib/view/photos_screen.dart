@@ -1,6 +1,9 @@
+import 'package:crm/controller/photos_controller.dart';
+import 'package:crm/controller/site_controller.dart';
 import 'package:crm/view/calendar_screen.dart';
 import 'package:crm/widget/site_list_items.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PhotosScreen extends StatelessWidget {
   const PhotosScreen({super.key});
@@ -14,6 +17,17 @@ class PhotosScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         title: const Text("Photos"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: GestureDetector(
+              onTap: () {
+                PhotosController.to.getSitePhotos();
+              },
+              child: const Icon(Icons.refresh_rounded),
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: width * 0.02),
@@ -40,38 +54,56 @@ class PhotosScreen extends StatelessWidget {
               SizedBox(
                 height: height * 0.02,
               ),
-              Row(
-                children: [
-                  siteListItems(title: "Site Name", text: "Krishna"),
-                  const Spacer(),
-                  siteListItems(title: "Location", text: "Katargam"),
-                  const Spacer()
-                ],
-              ),
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 40.0,
-                  mainAxisSpacing: 40.0,
-                ),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                      child: Text(
-                        '${index + 1}',
-                        style:
-                            const TextStyle(fontSize: 24, color: Colors.white),
-                      ),
+              SiteController.to.sites.value.sites!.isEmpty
+                  ? const Center(
+                      child: Text("No Site's found"),
+                    )
+                  : Row(
+                      children: [
+                        siteListItems(
+                            title: "Site Name",
+                            text: SiteController
+                                .to.sites.value.sites!.first.siteName
+                                .toString()),
+                        const Spacer(),
+                        siteListItems(
+                            title: "Location",
+                            text: SiteController
+                                .to.sites.value.sites!.first.siteLocation
+                                .toString()),
+                        const Spacer()
+                      ],
                     ),
-                  );
-                },
-              )
+              Obx(() => PhotosController.to.photoModel.value.sitePhotos!.isEmpty
+                  ? const Center(child: Text("No Photo's Uploaded"))
+                  : GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 40.0,
+                        mainAxisSpacing: 40.0,
+                      ),
+                      itemCount:
+                          PhotosController.to.photoModel.value.sitePhotos !=
+                                  null
+                              ? PhotosController
+                                  .to.photoModel.value.sitePhotos?.length
+                              : 0,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            decoration: BoxDecoration(
+                                color: Colors.blueAccent,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Image.network(
+                              PhotosController
+                                  .to.photoModel.value.sitePhotos![index].url
+                                  .toString(),
+                              fit: BoxFit.fill,
+                            ));
+                      },
+                    ))
             ],
           )),
     );

@@ -29,6 +29,7 @@ class SiteModel {
 }
 
 class Site {
+  String? siteId;
   String? siteName;
   String? siteLocation;
   String? ownerName;
@@ -40,6 +41,7 @@ class Site {
   List<Manager>? helper;
 
   Site({
+    this.siteId,
     this.siteName,
     this.siteLocation,
     this.ownerName,
@@ -52,6 +54,7 @@ class Site {
   });
 
   factory Site.fromJson(Map<String, dynamic> json) => Site(
+        siteId: json["site_id"],
         siteName: json["site_name"],
         siteLocation: json["site_location"],
         ownerName: json["owner_name"],
@@ -73,6 +76,7 @@ class Site {
       );
 
   Map<String, dynamic> toJson() => {
+        "site_id": siteId,
         "site_name": siteName,
         "site_location": siteLocation,
         "owner_name": ownerName,

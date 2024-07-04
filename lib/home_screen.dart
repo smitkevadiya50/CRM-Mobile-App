@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
         // Switch between different widgets based on the selected index
         switch (GeneralController.to.selectedIndex.value) {
           case 0:
-            return SiteScreen();
+            return const SiteScreen();
           case 1:
             return const AttendanceScreen();
           case 2:
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           case 3:
             return const SettingsScreen();
           default:
-            return SiteScreen();
+            return const SiteScreen();
         }
       }),
       bottomNavigationBar: Obx(() {

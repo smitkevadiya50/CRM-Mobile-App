@@ -1,3 +1,4 @@
+import 'package:crm/controller/photos_controller.dart';
 import 'package:crm/controller/site_controller.dart';
 import 'package:get/get.dart';
 
@@ -12,11 +13,19 @@ class GeneralController extends GetxController {
   // Function to change the selected index
   void changeIndex(int index) {
     selectedIndex.value = index;
+    if (index == 2) {
+      PhotosController.to.getSitePhotos();
+    }
   }
 
   void updateSelectedDate(DateTime date) {
     selectedDate.value = date;
-    SiteController.to.fetchSites();
+    if (selectedIndex.value == 0) {
+      SiteController.to.fetchSites();
+    }
+    if (selectedIndex.value == 2) {
+      PhotosController.to.getSitePhotos();
+    }
   }
 
   void moveDateRange(int days) {
