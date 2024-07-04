@@ -36,7 +36,9 @@ class PhotosScreen extends StatelessWidget {
               const CalendarScreen(),
               SizedBox(height: height * 0.02),
               GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    await PhotosController.to.addPhoto();
+                  },
                   child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
